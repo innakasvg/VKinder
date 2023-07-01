@@ -1,0 +1,5 @@
+comunity_token = ''
+acces_token = 'vk1.a.zSK-ghw1wuptQ98ZGA111Bg8he9WV1b7m2PZEQJH88dG0BYGIP1vOO-zW5R78z1ptn3Gj_rru2gItKo8_DvdSh2yzGFklCpvJvfJHImYh2mrSdLWQMgrlCrEY-OiydyuycMFoq_U1ZVMqhyeuI5bKRAvG0ACUNQgO7zMQpZwyrBfsucHuK6pf44oBCl4qjF_'
+db_url_object = "postgresql+psycopg2://postgres:postgres@localhost/vkinder"
+#"postgresql://postgres:YOURPASSWORD@localhost:5432/vKinder_bot_db"
+#https://oauth.vk.com/blank.html#access_token=vk1.a.zSK-ghw1wuptQ98ZGA111Bg8he9WV1b7m2PZEQJH88dG0BYGIP1vOO-zW5R78z1ptn3Gj_rru2gItKo8_DvdSh2yzGFklCpvJvfJHImYh2mrSdLWQMgrlCrEY-OiydyuycMFoq_U1ZVMqhyeuI5bKRAvG0ACUNQgO7zMQpZwyrBfsucHuK6pf44oBCl4qjF_&expires_in=86400&user_id=7887184
