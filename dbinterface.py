@@ -20,7 +20,7 @@ class Seen(Base):
 engine = create_engine(db_url_object)
 Base.metadata.create_all(engine)
 with Session(engine) as session:
-    to_bd = Seen(profile_id=1, worksheet_id=1)
+    to_bd = Seen(profile_id=2, worksheet_id=2)
     session.add(to_bd)
     session.commit()
 
@@ -28,11 +28,11 @@ with Session(engine) as session:
 
 engine = create_engine(db_url_object)
 with Session(engine) as session:
-    from_bd = session.query(Seen).filter(Seen.profile_id==1).all()
+    from_bd = session.query(Seen).filter(Seen.profile_id==2).all()
     for item in from_bd:
         print(item.worksheet_id)
 
 if __name__ == '__main__':
-    bot = BotFront(comunity_token, acces_token)
+    #bot = BotFront(comunity_token, acces_token)
     bot.event_handler()
             

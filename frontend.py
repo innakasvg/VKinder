@@ -22,6 +22,8 @@ class BotFront():
                                 'random_id': get_random_id()
                                 }
                                 )
+
+     
         
     def event_handler(self):
         longpoll = VkLongPoll(self.interface)
