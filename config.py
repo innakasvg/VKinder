@@ -1,3 +1,3 @@
-comunity_token = ''
-acces_token = ''
+comunity_token = 'vk1.a.srwlNv-4TczTKe7AC_3mHoUbzduFrhVuLzKxcmhDG8pL7F1l4uaPALP7b_3NsxgMc4x-KPMLrD7lz5QoI2R5yrzfxtgdnUDkSdQEmqekKfswaNOv4pPyFX3j9fUZ2KK72SX_0YVyMaE32Jpuz5pa2ZqC8sftW_6p1pvAmjsP8ValPLV4JV21loHCtVF7iC4KwUxH285h2E-5ytitmzdyyA'
+acces_token = 'vk1.a.dr7lhONtdLbClxTrR0eK_Vajy_yYpqdXz1fObEG2a169h_Be2pM0x7InBtisR1CUocXND8-FnU2NbN1cNXHc0RjKUlzfm0C_VpzhbHNKb_9IGzhwT6Righ3-GekBCjR0eEwAq2ECEIu2lcTVv7B9dL6RIdBkvXfhlZhGPpcRBFBgep7W_hpbPfLI7J2oNttL'
 db_url_object = "postgresql+psycopg2://postgres:postgres@localhost/vkinder"
