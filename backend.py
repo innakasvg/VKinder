@@ -20,15 +20,13 @@ class VkTools:
         try:
             info, = self.api.method('users.get',
                                     {'user_id': user_id,
-                                    'fields': 'city,bdate,sex,'
+                                    'fields': 'city,bdate,sex,relation'
                                     }
                                     )
         except ApiError as e:
             info = {}
             print(f'error = {e}')
-        pprint(info)
-        #pprint(info['first_name'])
-        #pprint(info['home_town'])
+        #pprint(info)
         user_info = {'name': info['first_name'] + ' ' + info['last_name'] if
         'first_name' in info and 'last_name' in info else None,
                      'age': self._bdate_to_age(info['bdate']),
@@ -36,7 +34,6 @@ class VkTools:
                      'sex': info.get('sex') if 'sex' in info else None,
                      'id': info.get('id')
                      }
-        pprint(user_info)
         return user_info
 
     def search_worksheet(self, params, offset):
@@ -49,6 +46,7 @@ class VkTools:
                                     'age_to': params['age'] + 3,
                                     'has_photo': True,
                                     'sex': 1 if params['sex'] == 2 else 2,
+                                    'relation': 6,
                                     'hometown': params['city']
                                     }
                                     )
@@ -56,7 +54,7 @@ class VkTools:
             users = [ ]
             print(f'error = {e}')
 
-        result = [{'name': item['first_name'] + item['last_name'],
+        result = [{'name': item['first_name'] + ' ' + item['last_name'],
                     'id': item['id']
                     } for item in users['items'] if item['is_closed'] is False
                 ]

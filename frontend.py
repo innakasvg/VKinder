@@ -37,8 +37,8 @@ class BotFront():
         for event in longpoll.listen():
             if event.type == VkEventType.MESSAGE_NEW and event.to_me:
                 command = event.text.lower()
-                print(command)
-                print(event.user_id)
+                #print(command)
+                #print(event.user_id)
                 if command == 'привет':
                     self.params = self.api.get_profile_info(event.user_id)
                     self.message_send(event.user_id, f'Здравствуйте {self.params["name"]}')
@@ -63,12 +63,7 @@ class BotFront():
                             sex = (self.handler_info())
                         self.params['sex'] = 1 if sex == 'ж' else 2
 
-                    self.message_send(event.user_id, f'Введите "поиск" для поиска')
-
-
                 elif command == 'поиск':
-
-                    self.message_send(event.user_id, 'Запускаем поиск')
 
                     if  self.worksheets:
                         worksheet = self.worksheets.pop()
@@ -95,19 +90,12 @@ class BotFront():
 
                     self.message_send(
                         event.user_id,
-                        f'имя: {worksheet["name"]} ссылка: vk.com/id{worksheet["id"]}',
+                        f'Имя: {worksheet["name"]} ссылка: vk.com/id{worksheet["id"]}',
                         attachment = photo_string
                     )
                     # добавление в БД
                     if self.db_tools.find_profile(event.user_id, worksheet["id"]) is False:
                         self.db_tools.add_profile(event.user_id, worksheet["id"])
-
-
-
-
-
-
-
 
                 elif command == 'пока':
                     self.message_send(event.user_id, 'До встречи.')
