@@ -1,83 +1,65 @@
 from datetime import datetime
-
+from pprint import pprint
 import vk_api
 from vk_api.exceptions import ApiError
 
-from config import db_url, acces_token
-
-
-def _bdate_toyear(bdate):
-    user_year = bdate.split('.')[2] if bdate else None
-    now = datetime.now().year
-    return now - int(user_year)
+from config import acces_token
 
 
 class VkTools:
     def __init__(self, acces_token):
         self.api = vk_api.VkApi(token=acces_token)
 
+    def _bdate_to_age(self, bdate):
+        user_year = bdate.split('.')[2] if bdate else None
+        now = datetime.now().year
+        return now - int(user_year)
+
     def get_profile_info(self, user_id):
 
         try:
-            info = self.api.method('users.get',
+            info, = self.api.method('users.get',
                                     {'user_id': user_id,
-                                    'fields': 'city,bdate,sex,relation,home_town'
+                                    'fields': 'city,bdate,sex,'
                                     }
                                     )
         except ApiError as e:
             info = {}
             print(f'error = {e}')
-
+        pprint(info)
+        #pprint(info['first_name'])
+        #pprint(info['home_town'])
         user_info = {'name': info['first_name'] + ' ' + info['last_name'] if
         'first_name' in info and 'last_name' in info else None,
-                     'bdate': info['bdate'] if 'bdate' in info else None,
-                     'home_town': info.get('home_town') if 'home_town' in info else None,
+                     'age': self._bdate_to_age(info['bdate']),
+                     'city': info['city']['title'],
                      'sex': info.get('sex') if 'sex' in info else None,
-                     'city': info['city']['id'],
                      'id': info.get('id')
                      }
-
+        pprint(user_info)
         return user_info
 
-    def search_worksheet(self, params):
+    def search_worksheet(self, params, offset):
 
         try:
-            user = self.api.method('users.search',
+            users = self.api.method('users.search',
                                    {'count': 50,
-                                    'offset': 0,
-                                    'age_from': params['year'] - 3,
-                                    'age_to': params['year'] + 3,
+                                    'offset': offset,
+                                    'age_from': params['age'] - 3,
+                                    'age_to': params['age'] + 3,
                                     'has_photo': True,
                                     'sex': 1 if params['sex'] == 2 else 2,
-                                    'hometown': params['city'],
-                                    'status': 6,
-                                    'is_closed': False
+                                    'hometown': params['city']
                                     }
                                     )
-            try:
-                users = user['items']
-            except KeyError:
-                return []
-
-            result = []
-
-            for user in users:
-                if not user['is_closed']:
-                    result.append({'id': user['id'],
-                                   'name': user['first_name'] + ' ' + user['last_name']
-                                   }
-                                  )
-
-            return result
         except ApiError as e:
-            user = []
+            users = [ ]
             print(f'error = {e}')
 
         result = [{'name': item['first_name'] + item['last_name'],
-                   'id': item['id']
-                   }
-                  for item in user['items'] if item['is_closed'] is False
-                  ]
+                    'id': item['id']
+                    } for item in users['items'] if item['is_closed'] is False
+                ]
 
         return result
 
@@ -120,4 +102,4 @@ if __name__ == '__main__':
     user_id = []
     bot = VkTools(acces_token)
     params = bot.get_profile_info(user_id)
-    users = bot.search_worksheet(params)
+    users = bot.search_worksheet(params,30)
