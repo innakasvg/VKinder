@@ -43,6 +43,29 @@ class BotFront():
                     self.params = self.api.get_profile_info(event.user_id)
                     self.message_send(event.user_id, f'Здравствуйте {self.params["name"]}')
 
+                    if self.params['age'] is None:
+                        self.message_send(event.user_id, f'Укажите свой возраст')
+                        age = (self.handler_info())
+                        while not self.int_check(age):
+                            self.message_send(event.user_id, f'Введите корректный возраст')
+                            age = (self.handler_info())
+                        self.params['age'] = int(age)
+
+                    if self.params['city'] is None:
+                        self.message_send(event.user_id, f'Укажите свой город')
+                        self.params['city'] = self.handler_info()
+
+                    if self.params['sex'] == 0:
+                        self.message_send(event.user_id, f'Укажите пол (м/ж)')
+                        sex = (self.handler_info())
+                        while sex not in 'мж':
+                            self.message_send(event.user_id, f'Введите корректный пол м/ж')
+                            sex = (self.handler_info())
+                        self.params['sex'] = 1 if sex == 'ж' else 2
+
+                    self.message_send(event.user_id, f'Введите "поиск" для поиска')
+
+
                 elif command == 'поиск':
 
                     self.message_send(event.user_id, 'Запускаем поиск')
@@ -61,7 +84,7 @@ class BotFront():
                         worksheet = self.worksheets.pop()
 
                         # проверка в БД
-                        while self.Seen.find_profile(event.user_id, worksheet["id"]) is True:
+                        while self.db_tools.find_profile(event.user_id, worksheet["id"]) is True:
                             worksheet = self.worksheets.pop()
 
                         photos = self.api.get_photos(worksheet['id'])
@@ -72,7 +95,7 @@ class BotFront():
 
                     self.message_send(
                         event.user_id,
-                        f'имя: {worksheet["name"]} ссылка: vk.com/{worksheet["id"]}',
+                        f'имя: {worksheet["name"]} ссылка: vk.com/id{worksheet["id"]}',
                         attachment = photo_string
                     )
                     # добавление в БД

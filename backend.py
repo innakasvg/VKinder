@@ -65,37 +65,24 @@ class VkTools:
 
     def get_photos(self, id):
         try:
-            photos = self.vkapi.method('photos.get',
-                                       {'owner_id': id,
-                                        'album_id': 'profile',
-                                        'extended': 1
-                                        }
-                                       )
-            try:
-                photos = photos['items']
-            except KeyError:
-                return []
-
-            result = [{'owner_id': item['owner_id'],
-                       'id': item['id'],
-                       'likes': item['likes']['count'],
-                       'comments': item['comments']['count']
-                       }
-                      for item in photos['items']
-                      ]
-
-            return result
+            photos = self.api.method('photos.get',
+                                 {'owner_id': id,
+                                  'album_id': 'profile',
+                                  'extended': 1
+                                  }
+                                 )
         except ApiError as e:
-            photos = []
+            photos = { }
             print(f'error = {e}')
 
-            photos_dict = dict()
-            for photo in photos:
-                likes = photo['likes']['count']
-                comments = comments['comments']['count']
-                photos_dict[db_url] = likes
-                top3_photos = sorted(photos_dict.items(), key=lambda x: x[1], reverse=True)[0:3]
-            return top3_photos
+        result = [{'owner_id': item['owner_id'],
+                    'id': item['id'],
+                    'likes': item['likes']['count'],
+                    'comments': item['comments']['count']
+                    } for item in photos['items']
+                ]
+
+        return result [:3]
 
 
 if __name__ == '__main__':
