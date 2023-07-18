@@ -27,44 +27,46 @@ class BotFront():
                                 'random_id': get_random_id()
                                 }
                                 )
+        
+    def handler_info(self):
+        for event in self.longpoll.listen():
+            if event.type == VkEventType.MESSAGE_NEW and event.to_me:
+                return event.text
 
 
 
     def event_handler(self):
-        longpoll = VkLongPoll(self.interface)
-
-        
-        for event in longpoll.listen():
+        for event in self.longpoll.listen():
             if event.type == VkEventType.MESSAGE_NEW and event.to_me:
                 command = event.text.lower()
-                #print(command)
-                #print(event.user_id)
+
                 if command == 'привет':
                     self.params = self.api.get_profile_info(event.user_id)
                     self.message_send(event.user_id, f'Здравствуйте {self.params["name"]}')
+                 
 
                     if self.params['age'] is None:
                         self.message_send(event.user_id, f'Укажите свой возраст')
-                        age = (self.handler_info())
-                        while not self.int_check(age):
+                        age = self.handler_info()
+                        while not age.isdigit():
                             self.message_send(event.user_id, f'Введите корректный возраст')
-                            age = (self.handler_info())
+                            age = self.handler_info()
                         self.params['age'] = int(age)
 
                     if self.params['city'] is None:
                         self.message_send(event.user_id, f'Укажите свой город')
                         self.params['city'] = self.handler_info()
 
-                    if self.params['sex'] == 0:
+                    if self.params['sex'] is None:
                         self.message_send(event.user_id, f'Укажите пол (м/ж)')
-                        sex = (self.handler_info())
+                        sex = self.handler_info()
                         while sex not in 'мж':
                             self.message_send(event.user_id, f'Введите корректный пол м/ж')
-                            sex = (self.handler_info())
+                            sex = self.handler_info()
                         self.params['sex'] = 1 if sex == 'ж' else 2
 
                 elif command == 'поиск':
-
+                    
                     if  self.worksheets:
                         worksheet = self.worksheets.pop()
 
@@ -79,8 +81,12 @@ class BotFront():
                         worksheet = self.worksheets.pop()
 
                         # проверка в БД
-                        while self.db_tools.find_profile(event.user_id, worksheet["id"]) is True:
-                            worksheet = self.worksheets.pop()
+                        while self.db_tools.find_profile(event.user_id, worksheet['id']) is True:
+                            if len(self.worksheets):
+                                worksheet = self.worksheets.pop()
+                            else:
+                                self.message_send(event.user_id, f'Ничего не найдено, попробуйте позднее')   
+                                break
 
                         photos = self.api.get_photos(worksheet['id'])
                         photo_string = ''

@@ -23,6 +23,9 @@ class DbTools:
         self.engine = engine
 
     def add_profile(self, profile_id, worksheet_id):
+        print('add')
+        print(profile_id)
+        print(worksheet_id)
         with Session(self.engine) as session:
             add_to_bd = Seen(profile_id=profile_id, worksheet_id=worksheet_id)
             session.add(add_to_bd)
@@ -31,11 +34,15 @@ class DbTools:
 # извлечение записей из БД
 
     def find_profile(self, profile_id, worksheet_id):
+        print('look')
+        print(profile_id)
+        print(worksheet_id)
         with Session(self.engine) as session:
             find_in_bd = session.query(Seen).filter(
                 Seen.profile_id == profile_id,
                 Seen.worksheet_id == worksheet_id
                 ).first()
+            print(find_in_bd)
             return True if find_in_bd else False
 
 if __name__ == '__main__':

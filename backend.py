@@ -29,11 +29,12 @@ class VkTools:
         #pprint(info)
         user_info = {'name': info['first_name'] + ' ' + info['last_name'] if
         'first_name' in info and 'last_name' in info else None,
-                     'age': self._bdate_to_age(info['bdate']),
+                     'age': self._bdate_to_age(info.get('bdate')),
                      'city': info['city']['title'],
                      'sex': info.get('sex') if 'sex' in info else None,
                      'id': info.get('id')
                      }
+
         return user_info
 
     def search_worksheet(self, params, offset):
@@ -87,4 +88,4 @@ if __name__ == '__main__':
     user_id = []
     bot = VkTools(acces_token)
     params = bot.get_profile_info(user_id)
-    users = bot.search_worksheet(params,30)
+    users = bot.search_worksheet(params,20)
