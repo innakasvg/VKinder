@@ -1,5 +1,4 @@
 from datetime import datetime
-from pprint import pprint
 import vk_api
 from vk_api.exceptions import ApiError
 
@@ -26,7 +25,7 @@ class VkTools:
         except ApiError as e:
             info = {}
             print(f'error = {e}')
-        #pprint(info)
+        
         user_info = {'name': info['first_name'] + ' ' + info['last_name'] if
         'first_name' in info and 'last_name' in info else None,
                      'age': self._bdate_to_age(info.get('bdate')),

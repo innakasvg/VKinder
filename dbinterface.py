@@ -1,8 +1,14 @@
 # импорты
+#import sqlalchemy as sq
+#from sqlalchemy.orm import declarative_base
+#from sqlalchemy import create_engine
+#from sqlalchemy.orm import Session
+
 import sqlalchemy as sq
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.orm import declarative_base, Session
 from sqlalchemy import create_engine, MetaData
-from sqlalchemy.orm import Session
+
+
 from config import db_url_object
 
 # схема БД
@@ -48,7 +54,7 @@ class DbTools:
 if __name__ == '__main__':
     profile_id = []
     worksheet_id = []
-    Base.metadata.create_all(engine)
+    metadata.create_all(engine)
     DbTools.add_profile(engine, profile_id, worksheet_id)
     result = DbTools.find_profile(engine, profile_id, worksheet_id)
     print(result)

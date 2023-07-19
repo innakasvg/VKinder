@@ -1,4 +1,3 @@
-
 import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 from vk_api.utils import get_random_id
@@ -7,7 +6,7 @@ from config import comunity_token, acces_token
 from backend import VkTools
 from dbinterface import DbTools, engine
 
-class BotFront():
+class BotFront:
 
     def __init__(self,comunity_token, acces_token):
         self.interface = vk_api.VkApi(token=comunity_token)
